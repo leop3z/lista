@@ -129,13 +129,15 @@ func (iterador *iterListaEnlazada[T]) Siguiente() {
 
 func (iterador *iterListaEnlazada[T]) Insertar(t T) {
 	nodo := crearNodo(t)
-	nodo.siguiente = iterador.actual
 
 	if iterador.anterior == nil {
 		iterador.lista.primero = nodo
 	} else if iterador.actual == nil {
 		iterador.anterior.siguiente = nodo
 		iterador.lista.ultimo = nodo
+	} else {
+		nodo.siguiente = iterador.actual
+		iterador.anterior.siguiente = nodo
 	}
 
 	iterador.actual = nodo
