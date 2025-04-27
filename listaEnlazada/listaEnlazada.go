@@ -146,7 +146,7 @@ func (iterador *iterListaEnlazada[T]) Insertar(t T) {
 
 func (iterador *iterListaEnlazada[T]) Borrar() T {
 	if iterador.actual == nil {
-		panic("La lista está vacía")
+		panic("Estas en nil, nada para borrar")
 	}
 
 	dato := iterador.actual.dato
