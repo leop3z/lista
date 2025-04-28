@@ -149,19 +149,15 @@ func TestBorrarPrimeroConIterador(t *testing.T) {
 }
 
 func TestBorrarUltimoConIterador(t *testing.T) {
+	// Borrar() cuando el iterador apunta al ultimo elemento, borra el ultimo elemento de la lista.
 	lista := listaEnlazada.CrearListaEnlazada[string]()
 	lista.InsertarUltimo("x")
 	lista.InsertarUltimo("y")
+	lista.InsertarUltimo("z")
 	iter := lista.Iterador()
-	for iter.HaySiguiente() {
-		iter.Siguiente()
-	}
-	iter.Insertar("z")
-	iter2 := lista.Iterador()
-	for iter2.HaySiguiente() {
-		iter2.Siguiente()
-	}
-	iter2.Borrar()
+	iter.Siguiente()
+	iter.Siguiente()
+	require.Equal(t, "z", iter.Borrar())
 	require.Equal(t, "y", lista.VerUltimo())
 }
 
@@ -170,16 +166,20 @@ func TestBorrarEnElMedioConIterador(t *testing.T) {
 	lista.InsertarUltimo(1)
 	lista.InsertarUltimo(2)
 	lista.InsertarUltimo(3)
+	lista.InsertarUltimo(4)
+	lista.InsertarUltimo(5)
 	iter := lista.Iterador()
 	iter.Siguiente()
 	iter.Siguiente()
+	// Borrar() efectivamente, devuelve el elemento al que apuntaba el iterador.
 	valor := iter.Borrar()
-	require.Equal(t, 2, valor)
-	expect := []int{1, 3}
+	require.Equal(t, 3, valor)
+	// Borrar() modifica los nodos correctamente de manera que la lista siga siendo recorrible y el valor borrado ya no se encuentra en la lista.
+	expect := []int{1, 2, 4, 5}
 	i := 0
 	lista.Iterar(func(val int) bool {
 		require.Equal(t, expect[i], val)
 		i++
-		return true
+		return val != valor
 	})
 }

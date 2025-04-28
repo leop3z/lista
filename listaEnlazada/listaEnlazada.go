@@ -145,20 +145,21 @@ func (iterador *iterListaEnlazada[T]) Insertar(t T) {
 }
 
 func (iterador *iterListaEnlazada[T]) Borrar() T {
-	if iterador.actual == nil {
-		panic("Estas en nil, nada para borrar")
+	if !iterador.HaySiguiente() {
+		panic("El iterador termino de iterar")
 	}
-
 	dato := iterador.actual.dato
 
-	if iterador.anterior == nil {
+	if iterador.actual == iterador.lista.primero {
 		iterador.lista.primero = iterador.actual.siguiente
 	} else {
 		iterador.anterior.siguiente = iterador.actual.siguiente
 	}
+	if iterador.actual == iterador.lista.ultimo {
+		iterador.lista.ultimo = iterador.anterior
+	}
 
 	iterador.actual = iterador.actual.siguiente
 	iterador.lista.largo--
-
 	return dato
 }
